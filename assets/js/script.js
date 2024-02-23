@@ -44,3 +44,4 @@ fetchweather(query)
 console.log (query)
 
   });
+// restaurants
