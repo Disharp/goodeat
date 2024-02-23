@@ -41,7 +41,45 @@ document.querySelector("#userButton").addEventListener("click", function (event)
     event.preventDefault()
 var query = catchInput();
 fetchweather(query)
-console.log (query)
+displayRestaurantAround(query)
 
   });
 // restaurants
+
+var restaurantList= $('#restaurants')
+var restaurantLocation = $('#restaurant-name')
+
+function displayRestaurantAround(query) {
+  // change lat/long to query
+  var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316);
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      center: pyrmont,
+      zoom: 15
+    });
+
+  const service = new google.maps.places.PlacesService(map);
+  const request = {
+    location: pyrmont,
+    radius: 5000,
+    types: ['restaurant']
+  }
+  function callback(results){
+    console.log(results)
+    results.forEach((result) => {
+      var span = $("<span></span>");
+      span.html("Rating: " + result.rating + "&#9734;");
+      var button = $("<button></button>");
+      button.attr("type", "button");
+      var ol = $('#places')
+      var li = $("<li></li>");
+      li.text(result.name + " - ");
+
+      li.append(span);
+      li.append(button);
+      restaurantList.append(li);
+    })
+  }
+  service.nearbySearch(request, callback);
+
+  }
